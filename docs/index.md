@@ -270,9 +270,8 @@ recommendation.
   [BMAD](https://github.com/bmad-code-org/BMAD-METHOD),
   [Kiro](https://kiro.dev/docs/specs/),
   [Tessl](https://tessl.io/).
-- Instructions files for agents: [AGENTS.md](https://agents.md),
-  [CLAUDE.md](https://code.claude.com/docs/en/memory),
-  [Agent Skills](https://agentskills.io/).
+- Instruction files for agents, as open conventions shared by most tools:
+  [AGENTS.md](https://agents.md) and [Agent Skills](https://agentskills.io/).
 - Policies and guides:
   [The Carpentries' GenAI policy](https://docs.carpentries.org/policies/genai-policy.html);
   [Responsible use of AI in research software](https://www.software.ac.uk/guide/responsible-use-ai-research-software), Institute for Research Software;
