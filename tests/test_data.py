@@ -1,4 +1,7 @@
+import zipfile
 from pathlib import Path
+
+import pytest
 
 from hello_world_medical_imaging.data import (
     download_dataset,
@@ -22,6 +25,15 @@ def test_download_dataset_is_skipped_when_destination_exists(tmp_path: Path) -> 
     destination.mkdir()
 
     download_dataset("file:///does/not/exist.zip", destination)  # would fail if attempted
+
+
+def test_download_dataset_rejects_an_archive_without_the_dataset_folder(tmp_path: Path) -> None:
+    archive = tmp_path / "wrong.zip"
+    with zipfile.ZipFile(archive, "w") as zipped:
+        zipped.writestr("something_else/readme.txt", "no images here")
+
+    with pytest.raises(FileNotFoundError):
+        download_dataset(archive.as_uri(), tmp_path / "Open_I_abd_vs_CXRs")
 
 
 def test_load_image_datasets_yields_batches_of_images_and_binary_labels(
