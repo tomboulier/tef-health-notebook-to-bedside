@@ -24,7 +24,7 @@ end of that step.
 > This is a teaching example. It is not a medical device and must not be used
 > to make any decision about a patient.
 
-## Running the notebook
+## Running the code
 
 The environment is described in files, so that it can be rebuilt anywhere:
 [`.python-version`](.python-version) (Python 3.12),
@@ -33,28 +33,24 @@ versions) and [`uv.lock`](uv.lock) (every transitive dependency, pinned too).
 With [uv](https://docs.astral.sh/uv/):
 
 ```bash
-uv sync                                    # create .venv with the locked versions
-uv run --with jupyterlab jupyter lab       # open the notebook in a browser
+uv sync                                        # create .venv with the locked versions
+uv run hello-world-medical-imaging             # train with config.toml
+uv run hello-world-medical-imaging --config my-experiment.toml
 ```
 
 Paths, hyperparameters and the random seed are in
-[`config.toml`](config.toml), not in the code. The notebook downloads the
-images into `data/` on its first run. To run it from top to bottom without a
-browser, with [papermill](https://papermill.readthedocs.io/), and keep the
-executed copy with its outputs:
+[`config.toml`](config.toml), not in the code. The images are downloaded into
+`data/` on the first run; the trained model and the training curves are
+written to `outputs/`, and the predictions for the two test images are
+printed.
 
-```bash
-mkdir -p outputs
-uv run papermill --cwd notebooks \
-    notebooks/tuto-hello-world-deep-learning-medical-imaging.ipynb \
-    outputs/tuto-hello-world-deep-learning-medical-imaging.ipynb
-```
-
-Add `-p config_file my-experiment.toml` to use another configuration (a
-path relative to `notebooks/`, or an absolute one).
+The code is in the package [`src/hello_world_medical_imaging/`](src/hello_world_medical_imaging/),
+whose architecture is described in [`AGENTS.md`](AGENTS.md). The notebook is
+now a short demonstration of the package; [`notebooks/README.md`](notebooks/README.md)
+says how to open or run it.
 
 The [`Dockerfile`](Dockerfile) packages the same environment in a container
-image that runs the notebook in the same way, on any machine with Docker:
+image that runs the same command, on any machine with Docker:
 
 ```bash
 docker build --tag hello-world-medical-imaging .
