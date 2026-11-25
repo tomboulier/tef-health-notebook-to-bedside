@@ -71,7 +71,9 @@ def run(config: Config) -> None:
     """
     keras.utils.set_random_seed(config.seed)
 
-    dataset_directory = download_dataset(config.dataset_url, config.dataset_directory)
+    dataset_directory = download_dataset(
+        config.dataset_url, config.dataset_directory, config.dataset_sha256
+    )
     train_dataset, validation_dataset = load_image_datasets(
         dataset_directory, config.image_size, config.batch_size, config.seed
     )

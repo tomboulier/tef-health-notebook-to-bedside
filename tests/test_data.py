@@ -6,6 +6,7 @@ import pytest
 from hello_world_medical_imaging.data import (
     download_dataset,
     load_image_datasets,
+    sha256_of,
     synthetic_datasets,
 )
 
@@ -18,6 +19,26 @@ def test_download_dataset_unpacks_the_archive(dataset_archive: Path, tmp_path: P
     assert result == destination
     assert (destination / "TRAIN" / "openI_CXR" / "0.png").exists()
     assert (destination / "TEST" / "abd2.png").exists()
+
+
+def test_download_dataset_accepts_an_archive_with_the_expected_checksum(
+    dataset_archive: Path, tmp_path: Path
+) -> None:
+    destination = tmp_path / "unpacked" / "Open_I_abd_vs_CXRs"
+
+    download_dataset(dataset_archive.as_uri(), destination, sha256_of(dataset_archive))
+
+    assert (destination / "TRAIN").is_dir()
+
+
+def test_download_dataset_rejects_an_archive_with_another_checksum(
+    dataset_archive: Path, tmp_path: Path
+) -> None:
+    destination = tmp_path / "unpacked" / "Open_I_abd_vs_CXRs"
+
+    with pytest.raises(ValueError, match="SHA-256"):
+        download_dataset(dataset_archive.as_uri(), destination, "0" * 64)
+    assert not destination.exists()
 
 
 def test_download_dataset_is_skipped_when_destination_exists(tmp_path: Path) -> None:

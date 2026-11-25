@@ -9,6 +9,7 @@ with either.
 
 from __future__ import annotations
 
+import hashlib
 import logging
 import tempfile
 import urllib.request
@@ -29,20 +30,40 @@ TEST_SUBDIRECTORY = "TEST"
 DatasetPair = tuple[tf.data.Dataset, tf.data.Dataset]
 
 
-def download_dataset(url: str, destination: Path) -> Path:
+def sha256_of(path: Path) -> str:
+    """Return the SHA-256 checksum of a file, as 64 hexadecimal characters.
+
+    >>> import tempfile
+    >>> with tempfile.NamedTemporaryFile() as file:
+    ...     sha256_of(Path(file.name))[:16]
+    'e3b0c44298fc1c14'
+    """
+    digest = hashlib.sha256()
+    with path.open("rb") as file:
+        for block in iter(lambda: file.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def download_dataset(url: str, destination: Path, sha256: str | None = None) -> Path:
     """Download and unpack the dataset archive, unless ``destination`` exists.
 
     The archive must contain a top-level folder named like ``destination``,
-    with ``TRAIN``, ``VAL`` and ``TEST`` sub-folders.
+    with ``TRAIN``, ``VAL`` and ``TEST`` sub-folders. When ``sha256`` is
+    given, the archive must also have that checksum: the same address could
+    one day serve other data, and the checksum is what identifies the data
+    the results were obtained with.
 
     Args:
         url: Where to fetch the zip archive from (``https://`` or ``file://``).
         destination: Folder that will hold the unpacked images.
+        sha256: Expected SHA-256 checksum of the archive, or ``None`` to skip the check.
 
     Returns:
         ``destination``, for convenience.
 
     Raises:
+        ValueError: If the archive does not have the expected checksum.
         FileNotFoundError: If the archive does not contain the expected folder.
     """
     if destination.exists():
@@ -52,6 +73,14 @@ def download_dataset(url: str, destination: Path) -> Path:
     logger.info("Downloading %s", url)
     with tempfile.NamedTemporaryFile(suffix=".zip") as archive:
         urllib.request.urlretrieve(url, archive.name)
+        if sha256 is not None:
+            actual = sha256_of(Path(archive.name))
+            if actual != sha256:
+                raise ValueError(
+                    f"Archive from {url} has SHA-256 {actual}, expected {sha256}: "
+                    "these are not the data the experiment was configured with"
+                )
+            logger.info("Archive checksum verified (SHA-256 %s)", actual)
         with zipfile.ZipFile(archive.name) as zipped:
             zipped.extractall(destination.parent)
     if not destination.exists():

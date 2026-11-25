@@ -6,6 +6,11 @@
 # Where the images are downloaded from (the original tutorial repository, at a
 # fixed commit) and where they are unpacked (ignored by Git).
 dataset_url = "https://raw.githubusercontent.com/paras42/Hello_World_Deep_Learning/9921a12c905c00a88898121d5dc538e3b524e520/Open_I_abd_vs_CXRs.zip"
+# The same archive is preserved by Software Heritage, the universal archive of
+# source code. If the GitHub repository ever disappears, use this address:
+# https://archive.softwareheritage.org/api/1/content/sha1_git:309c512a6c3bf221dfb29d57be875a5e65c9086f/raw/
+# Checksum of the archive: the download stops if the data are not these ones.
+dataset_sha256 = "6ac1f72507d9ff325ea0ba5f94a849849cf0f828614f24ee2fd88cb9008b264d"
 dataset_directory = "data/Open_I_abd_vs_CXRs"
 
 # Where the trained model, the training curves and other results are written (ignored by Git).

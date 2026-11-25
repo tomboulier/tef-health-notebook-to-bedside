@@ -41,6 +41,7 @@ class Config:
 
     Attributes:
         dataset_url: Address of the zip archive of the images.
+        dataset_sha256: SHA-256 checksum the archive must have, or ``None`` to skip the check.
         dataset_directory: Folder where the archive is unpacked.
         output_directory: Folder where the trained model and the curves are written.
         image_size: Images are resized to ``image_size`` x ``image_size`` pixels.
@@ -59,6 +60,7 @@ class Config:
         "https://raw.githubusercontent.com/paras42/Hello_World_Deep_Learning/"
         "9921a12c905c00a88898121d5dc538e3b524e520/Open_I_abd_vs_CXRs.zip"
     )
+    dataset_sha256: str | None = "6ac1f72507d9ff325ea0ba5f94a849849cf0f828614f24ee2fd88cb9008b264d"
     dataset_directory: Path = Path("data/Open_I_abd_vs_CXRs")
     output_directory: Path = Path("outputs")
     image_size: int = 299
