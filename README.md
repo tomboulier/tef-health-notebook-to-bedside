@@ -24,6 +24,49 @@ end of that step.
 > This is a teaching example. It is not a medical device and must not be used
 > to make any decision about a patient.
 
+## Running the notebook
+
+The environment is described in files, so that it can be rebuilt anywhere:
+[`.python-version`](.python-version) (Python 3.12),
+[`pyproject.toml`](pyproject.toml) (direct dependencies, pinned to exact
+versions) and [`uv.lock`](uv.lock) (every transitive dependency, pinned too).
+With [uv](https://docs.astral.sh/uv/):
+
+```bash
+uv sync                                    # create .venv with the locked versions
+uv run --with jupyterlab jupyter lab       # open the notebook in a browser
+```
+
+Paths, hyperparameters and the random seed are in
+[`config.toml`](config.toml), not in the code. The notebook downloads the
+images into `data/` on its first run. To run it from top to bottom without a
+browser, with [papermill](https://papermill.readthedocs.io/), and keep the
+executed copy with its outputs:
+
+```bash
+mkdir -p outputs
+uv run papermill --cwd notebooks \
+    notebooks/tuto-hello-world-deep-learning-medical-imaging.ipynb \
+    outputs/tuto-hello-world-deep-learning-medical-imaging.ipynb
+```
+
+Add `-p config_file my-experiment.toml` to use another configuration (a
+path relative to `notebooks/`, or an absolute one).
+
+The [`Dockerfile`](Dockerfile) packages the same environment in a container
+image that runs the notebook in the same way, on any machine with Docker:
+
+```bash
+docker build --tag hello-world-medical-imaging .
+docker run --rm \
+    --volume "$PWD/data:/app/data" --volume "$PWD/outputs:/app/outputs" \
+    hello-world-medical-imaging
+```
+
+[Podman](https://podman.io/) accepts the same commands. On a computing cluster,
+where Docker is usually not available,
+[Apptainer](https://apptainer.org/) runs the same image.
+
 ## Version control
 
 Everything needed to understand and rerun the work is in Git; nothing that
