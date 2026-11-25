@@ -44,7 +44,15 @@ logic in it.
 ```bash
 uv sync                                    # install the locked environment (Python 3.12)
 uv run hello-world-medical-imaging         # train with config.toml
+uv run ruff check . && uv run ruff format --check .
+uv run mypy
+uv run pytest                              # unit tests, integration test and doctests
 ```
+
+Ruff, mypy and pytest must all pass before a commit. When fixing a bug or
+adding behaviour, write the failing test first, then the code that makes it
+pass. Tests never use the network or the real radiographs: use the fixtures
+of `tests/conftest.py` and `synthetic_datasets`.
 
 ## Conventions
 

@@ -63,6 +63,20 @@ docker run --rm \
 where Docker is usually not available,
 [Apptainer](https://apptainer.org/) runs the same image.
 
+## Checking the code
+
+```bash
+uv run pytest                  # unit tests, integration test and doctests
+uv run ruff check .            # lint
+uv run ruff format --check .   # formatting
+uv run mypy                    # types
+docker run --rm hello-world-medical-imaging pytest   # the tests, inside the image
+```
+
+The tests need neither the network nor the radiographs: they use small noise
+images, and the integration test trains the real architecture, with random
+weights, for one epoch on synthetic data.
+
 ## Version control
 
 Everything needed to understand and rerun the work is in Git; nothing that
