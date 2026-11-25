@@ -33,6 +33,11 @@ dev = [
     "ruff==0.17.4",
     "mypy==2.4.1",
 ]
+# Builds the documentation site (`uv run mkdocs build --strict`).
+docs = [
+    "mkdocs==1.6.1",
+    "mkdocs-material==9.8.0",
+]
 # Computes the version number and the changelog from the commit messages.
 release = [
     "python-semantic-release==10.7.0",

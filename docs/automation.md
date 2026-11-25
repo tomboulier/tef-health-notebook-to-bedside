@@ -24,6 +24,24 @@ then found within a week, not when someone needs the code. Tools such as
 pull request for each new version of a dependency, which the same workflow
 checks. Neither is set up here.
 
+## Documentation (`docs.yml`)
+
+The site in `docs/` is built with [MkDocs](https://www.mkdocs.org/)
+(`mkdocs build --strict`, so that a broken internal link fails the build) on
+every push to `main` and every pull request. On `main` the result is
+published to GitHub Pages at
+<https://tomboulier.github.io/tef-health-notebook-to-bedside/>.
+
+Publishing needs Pages to be enabled once by a repository administrator:
+*Settings > Pages > Build and deployment > Source: GitHub Actions*.
+
+To build the site locally:
+
+```bash
+uv sync --group docs
+uv run mkdocs build --strict    # or `uv run mkdocs serve` to preview it
+```
+
 ## Versions and changelog (`release.yml`)
 
 Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/):
