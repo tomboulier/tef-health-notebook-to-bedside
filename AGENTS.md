@@ -26,7 +26,8 @@ teaching example, not a medical device. Never claim otherwise in code or docs.
 - `cli.py`: the only module that imports all the others and wires them
   together (the composition root).
 
-The data source is injected into training. Keep that boundary: `training.py`
+The data source is injected into training
+(`docs/adr/0001-inject-the-data-source-into-training.md`). Keep that boundary: `training.py`
 and `model.py` never read files or the configuration.
 
 `notebooks/` holds a short demonstration that calls the package. Do not put
