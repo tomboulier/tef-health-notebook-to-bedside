@@ -1,0 +1,21 @@
+# Data, model weights and training outputs never go into Git: they are large,
+# they change with every run, and the images are not ours to publish.
+# Version them with a tool made for large files (for example DVC or Git LFS).
+data/
+Open_I_abd_vs_CXRs/
+*.zip
+outputs/
+*.keras
+*.h5
+
+# Caches and virtual environments are rebuilt on each machine.
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
