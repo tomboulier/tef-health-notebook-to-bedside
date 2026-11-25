@@ -36,6 +36,8 @@ def download_dataset(url: str, destination: Path) -> Path:
         urllib.request.urlretrieve(url, archive.name)
         with zipfile.ZipFile(archive.name) as zipped:
             zipped.extractall(destination.parent)
+    if not destination.exists():
+        raise FileNotFoundError(f"Archive from {url} did not contain {destination.name}")
     return destination
 
 
