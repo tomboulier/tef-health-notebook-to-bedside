@@ -64,7 +64,10 @@ roadmap itself.
 
 **What to retain.** A history is a lab notebook that cannot be lost or
 rewritten by accident; it is only useful if each entry says what changed and
-why. Large files (images, weights) do not belong in Git: tools such as
+why, and if each commit holds a single change. A correction mixed into a
+larger commit is still in the code, but nobody will find it in the history,
+nor undo it without undoing the rest (the page
+[Changing one thing](exercises.md) shows both cases). Large files (images, weights) do not belong in Git: tools such as
 [DVC](https://dvc.org) or [Git LFS](https://git-lfs.com) version them next to
 the code without bloating it.
 
