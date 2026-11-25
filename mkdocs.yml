@@ -13,6 +13,7 @@ theme:
 
 nav:
   - Roadmap: index.md
+  - "Exercises: changing one thing": exercises.md
   - Usage: usage.md
   - Testing: testing.md
   - Automation and releases: automation.md

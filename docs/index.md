@@ -249,6 +249,15 @@ into "this was tested", and leaves a record of it.
 [Semantic Versioning](https://semver.org/) ·
 [Keep a Changelog](https://keepachangelog.com/).
 
+## Practise: changing one thing
+
+The page [Changing one thing](exercises.md) goes through three corrections
+made in this repository, each isolated in one place of the code and, in two
+cases out of three, in one commit. It then proposes five exercises: turn off
+the horizontal flip, switch to the archived data, move the optimizer settings
+to the configuration, undo a correction with `git revert`, and change the
+pretrained network.
+
 ## Working with coding agents
 
 Much of the code in this repository was written with a coding agent, under the
