@@ -331,5 +331,10 @@ produced at Université Grenoble Alpes. TEF-Health, the Testing and
 Experimentation Facility for Health AI and Robotics, is funded by the
 European Union under grant agreement No 101100700.
 
+The video presents version 1.0.1 of the repository
+([release notes](https://github.com/tomboulier/tef-health-notebook-to-bedside/releases/tag/v1.0.1)).
+To cite it, use the *Cite this repository* button on GitHub, which reads the
+file [`CITATION.cff`](https://github.com/tomboulier/tef-health-notebook-to-bedside/blob/main/CITATION.cff).
+
 The code is licensed under the MIT licence and the documentation, this page
 included, under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).

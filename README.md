@@ -134,6 +134,12 @@ with. The same archive is preserved by
 [Software Heritage](https://www.softwareheritage.org/); `config.toml` gives
 its address, to use if the original repository ever disappears.
 
+## Citing
+
+Version 1.0.1 is the one presented in the TEF-Health video. To cite the
+repository, use the *Cite this repository* button on GitHub, which reads
+[`CITATION.cff`](CITATION.cff).
+
 ## Licence
 
 - The code is licensed under the MIT licence ([`LICENSE`](LICENSE)).
