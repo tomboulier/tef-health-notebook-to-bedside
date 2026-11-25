@@ -24,6 +24,24 @@ end of that step.
 > This is a teaching example. It is not a medical device and must not be used
 > to make any decision about a patient.
 
+## Version control
+
+Everything needed to understand and rerun the work is in Git; nothing that
+can be regenerated or that is too large is.
+
+- **Commits** follow [Conventional Commits](https://www.conventionalcommits.org/)
+  (`feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `build:`, `ci:`,
+  `chore:`), so that `git log --oneline` reads as the history of the work.
+- **Notebook outputs** are cleared before a notebook is committed (*Edit >
+  Clear All Outputs* in Jupyter, or a tool such as
+  [nbstripout](https://github.com/kynan/nbstripout)): outputs make diffs
+  unreadable and can leak data.
+- **Data, model weights and outputs** are listed in [`.gitignore`](.gitignore).
+  When large files do need to be versioned, use a tool made for them, such as
+  [DVC](https://dvc.org) (data and models stored next to the code, in a remote
+  of your choice) or [Git LFS](https://git-lfs.com) (large files stored outside
+  the Git history).
+
 ## Data
 
 The 75 radiographs used by the tutorial are not stored in this repository.
