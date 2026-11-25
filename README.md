@@ -128,6 +128,12 @@ describes them as de-identified images from
 [Open-i](https://openi.nlm.nih.gov/) and states no licence for them. Notebook
 outputs are cleared before a commit for the same reason.
 
+The download is checked against the SHA-256 checksum given in `config.toml`,
+so that a result can always be traced to the exact data it was obtained
+with. The same archive is preserved by
+[Software Heritage](https://www.softwareheritage.org/); `config.toml` gives
+its address, to use if the original repository ever disappears.
+
 ## Licence
 
 - The code is licensed under the MIT licence ([`LICENSE`](LICENSE)).
@@ -141,6 +147,8 @@ outputs are cleared before a commit for the same reason.
 
 The original notebook transcribes the code of the tutorial by Lakhani et al.;
 see the article and the original repository for the terms of that material.
+That tutorial is very good work: read the article, and run the original
+notebook, which comes with its images and runs on its own.
 
 ## Contributing
 

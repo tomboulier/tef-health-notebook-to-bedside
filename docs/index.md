@@ -12,6 +12,12 @@ original code and images at
 [paras42/Hello_World_Deep_Learning](https://github.com/paras42/Hello_World_Deep_Learning)),
 a Jupyter notebook that classifies radiographs as chest or abdomen.
 
+The original tutorial is very good work, and worth reading before this page.
+The article explains each step for clinicians, and the repository ships the
+notebook together with its 75 images, so anyone can run it without asking
+for data. That a published notebook comes with its data is already a large
+part of reproducibility.
+
 The roadmap is not about certifying a medical device. It is about what has to
 be true of the code before anyone relies on it. Tools are named below as
 examples, never as recommendations.
@@ -81,6 +87,19 @@ The notebook was ported to Keras 3, and a
 executes it from top to bottom with papermill, without a browser. Run twice
 on a laptop processor, or once on the laptop and once in the container, it
 gives the same numbers.
+
+The data are identified too. The images are not copied into the repository:
+they are downloaded from the original tutorial repository, at a fixed commit,
+and the download stops if the archive does not have the SHA-256 checksum
+written in `config.toml`. A GitHub account can close, so `config.toml` also
+gives the address of the same archive in
+[Software Heritage](https://www.softwareheritage.org/), the universal archive
+of source code. This is the A of the
+[FAIR principles](https://www.go-fair.org/fair-principles/) (findable,
+accessible, interoperable, reusable): data that others cannot reach cannot
+be used to check a result. For larger data that change over time, tools such
+as [DVC](https://dvc.org) record which version of the data each experiment
+used.
 
 ### Why this step matters: the 2018 notebook no longer runs
 
