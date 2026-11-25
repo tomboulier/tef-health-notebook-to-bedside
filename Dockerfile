@@ -1,11 +1,11 @@
-# Container image that runs the notebook from top to bottom, without a
-# browser, with the exact dependency versions of uv.lock.
+# Container image that trains the classifier with the exact dependency
+# versions of uv.lock.
 #
 #   docker build --tag hello-world-medical-imaging .
 #   docker run --rm --volume "$PWD/data:/app/data" --volume "$PWD/outputs:/app/outputs" \
 #       hello-world-medical-imaging
 #
-# The executed notebook, with its outputs, is written to outputs/.
+# The trained model and the training curves are written to outputs/.
 FROM python:3.12.16-slim
 
 # uv installs the locked dependencies; its version is pinned like any other.
@@ -17,15 +17,13 @@ ENV UV_LINK_MODE=copy \
     UV_PROJECT_ENVIRONMENT=/opt/venv \
     PATH="/opt/venv/bin:$PATH"
 
-# Dependencies first, so that this layer is reused when only the notebook changes.
+# Dependencies first, so that this layer is reused when only the code changes.
 COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-install-project
+
+# Then the package itself and its configuration.
+COPY README.md config.toml ./
+COPY src ./src
 RUN uv sync --frozen
 
-COPY config.toml ./
-COPY notebooks ./notebooks
-RUN mkdir outputs
-
-# papermill runs the notebook in its own folder, as Jupyter does.
-CMD ["papermill", "--cwd", "notebooks", \
-     "notebooks/tuto-hello-world-deep-learning-medical-imaging.ipynb", \
-     "outputs/tuto-hello-world-deep-learning-medical-imaging.ipynb"]
+CMD ["hello-world-medical-imaging", "--config", "config.toml"]
