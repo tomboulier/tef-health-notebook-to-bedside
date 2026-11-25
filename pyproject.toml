@@ -105,6 +105,10 @@ ignore_missing_imports = true
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
 version_variables = ["CITATION.cff:version"]
+# uv.lock records the version of the package too: lock again after the version
+# is bumped, with the uv version of the Dockerfile and the CI, and include the
+# file in the release commit.
+build_command = "python -m pip install --quiet uv==0.11.32 && python -m uv lock && git add uv.lock"
 commit_parser = "conventional"
 allow_zero_version = true
 major_on_zero = false

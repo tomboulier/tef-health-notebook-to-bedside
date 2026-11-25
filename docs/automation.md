@@ -51,9 +51,11 @@ Commit messages follow [Conventional Commits](https://www.conventionalcommits.or
 [python-semantic-release](https://python-semantic-release.readthedocs.io/)
 computes the next [Semantic Versioning](https://semver.org/) number (a
 `fix:` bumps the patch number, a `feat:` the minor number, a breaking change
-the major number), writes it in `pyproject.toml`, adds a section to
-`CHANGELOG.md` (which follows [Keep a Changelog](https://keepachangelog.com/)),
-commits, tags and creates a GitHub release.
+the major number), writes it in `pyproject.toml` and `CITATION.cff`, locks
+the environment again so that `uv.lock` records the same version, adds a
+section to `CHANGELOG.md` (which follows
+[Keep a Changelog](https://keepachangelog.com/)), commits, tags and creates a
+GitHub release.
 
 The release workflow is started by hand (*Actions > Release > Run workflow*)
 rather than on every push to `main`, so that a maintainer decides when a
