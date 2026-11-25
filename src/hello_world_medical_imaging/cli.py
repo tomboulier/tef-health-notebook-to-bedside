@@ -25,6 +25,13 @@ from hello_world_medical_imaging.training import plot_history, train
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
+    """Parse the command line.
+
+    >>> parse_args([]).config
+    PosixPath('config.toml')
+    >>> parse_args(["--config", "other.toml"]).config
+    PosixPath('other.toml')
+    """
     parser = argparse.ArgumentParser(
         prog="hello-world-medical-imaging",
         description="Train a chest-versus-abdomen radiograph classifier.",

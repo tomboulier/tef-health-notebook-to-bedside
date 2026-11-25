@@ -20,6 +20,13 @@ class Augmentation:
 
 @dataclass(frozen=True)
 class Config:
+    """All the settings of one experiment.
+
+    >>> config = Config.from_dict({"image_size": 75, "epochs": 1})
+    >>> config.image_size, config.epochs, config.seed
+    (75, 1, 42)
+    """
+
     dataset_url: str = (
         "https://raw.githubusercontent.com/paras42/Hello_World_Deep_Learning/"
         "9921a12c905c00a88898121d5dc538e3b524e520/Open_I_abd_vs_CXRs.zip"
@@ -35,7 +42,15 @@ class Config:
 
     @classmethod
     def from_dict(cls, values: dict[str, Any]) -> Config:
-        # Missing keys keep their default; an unknown key is a TypeError.
+        """Build a configuration from a dictionary, such as parsed TOML.
+
+        Missing keys keep their default; an unknown key is an error.
+
+        >>> Config.from_dict({"epoch": 3})
+        Traceback (most recent call last):
+            ...
+        TypeError: Config.__init__() got an unexpected keyword argument 'epoch'
+        """
         values = dict(values)
         for key in ("dataset_directory", "output_directory"):
             if key in values:

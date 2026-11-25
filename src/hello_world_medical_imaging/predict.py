@@ -12,7 +12,13 @@ CLASS_NAMES = ("Chest X-ray", "Abdominal X-ray")
 
 
 def label_from_score(score: float) -> str:
-    # The model outputs the probability of the abdomen class.
+    """Turn the model output, the probability of the abdomen class, into a label.
+
+    >>> label_from_score(0.1)
+    'Chest X-ray'
+    >>> label_from_score(0.5)
+    'Abdominal X-ray'
+    """
     return CLASS_NAMES[1] if score >= 0.5 else CLASS_NAMES[0]
 
 

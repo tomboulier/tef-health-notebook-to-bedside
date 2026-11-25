@@ -61,8 +61,16 @@ def load_image_datasets(
 def synthetic_datasets(
     image_size: int, batch_size: int, seed: int, train_samples: int = 8, validation_samples: int = 4
 ) -> DatasetPair:
-    # Random images with random labels: no download, no patient data, and
-    # nothing for the model to learn. Enough to run the training pipeline.
+    """Random images with random labels, with the same contract as the radiographs.
+
+    No download, no patient data, and nothing for the model to learn: enough
+    to run the training pipeline.
+
+    >>> train, validation = synthetic_datasets(image_size=32, batch_size=4, seed=0)
+    >>> images, labels = next(iter(train))
+    >>> tuple(images.shape), tuple(labels.shape)
+    ((4, 32, 32, 3), (4, 1))
+    """
     generator = np.random.default_rng(seed)
 
     def make(samples: int) -> tf.data.Dataset:

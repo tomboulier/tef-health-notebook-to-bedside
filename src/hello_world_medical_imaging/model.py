@@ -15,7 +15,11 @@ from hello_world_medical_imaging.config import Augmentation
 
 
 def augmentation_layers(augmentation: Augmentation) -> keras.Sequential:
-    # Same transformations, ranges and border filling as ImageDataGenerator.
+    """Random transformations of the training images, as ImageDataGenerator did them.
+
+    >>> len(augmentation_layers(Augmentation(horizontal_flip=False)).layers)
+    4
+    """
     fill_mode = "nearest"
     layers: list[keras.Layer] = [
         keras.layers.RandomRotation(augmentation.rotation_degrees / 360, fill_mode=fill_mode),

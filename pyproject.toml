@@ -41,5 +41,7 @@ packages = ["src/hello_world_medical_imaging"]
 # ---------------------------------------------------------------------------
 # Tests
 # ---------------------------------------------------------------------------
+# pytest also runs the examples written in the docstrings (doctests).
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "src"]
+addopts = "--doctest-modules"
