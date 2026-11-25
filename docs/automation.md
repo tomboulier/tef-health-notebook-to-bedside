@@ -1,0 +1,75 @@
+# Automation and releases
+
+The workflows of `.github/workflows/` run on GitHub Actions.
+
+## Continuous integration (`ci.yml`)
+
+On every push and pull request, and every Monday morning:
+
+1. install the locked dependencies with uv;
+2. `ruff check` and `ruff format --check`;
+3. `mypy`;
+4. `pytest`, which runs the unit tests, the integration test and the
+   doctests;
+5. in a second job, build the Docker image and run `pytest` inside it, so
+   that the `Dockerfile` is checked too.
+
+The weekly run matters even when nobody touches the repository: it checks
+that the locked versions can still be installed, that the base image still
+builds and that the tests still pass. Breakage from outside (a package
+version withdrawn, a moved download, a new release of a GitHub action) is
+then found within a week, not when someone needs the code. Tools such as
+[Dependabot](https://docs.github.com/en/code-security/dependabot) or
+[Renovate](https://docs.renovatebot.com/) go one step further: they open a
+pull request for each new version of a dependency, which the same workflow
+checks. Neither is set up here.
+
+## Versions and changelog (`release.yml`)
+
+Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/):
+`feat:` for a new behaviour, `fix:` for a bug fix, `docs:`, `test:`,
+`refactor:`, `build:`, `ci:` and `chore:` for the rest, and `!` or a
+`BREAKING CHANGE:` footer for incompatible changes. From these,
+[python-semantic-release](https://python-semantic-release.readthedocs.io/)
+computes the next [Semantic Versioning](https://semver.org/) number (a
+`fix:` bumps the patch number, a `feat:` the minor number, a breaking change
+the major number), writes it in `pyproject.toml`, adds a section to
+`CHANGELOG.md` (which follows [Keep a Changelog](https://keepachangelog.com/)),
+commits, tags and creates a GitHub release.
+
+The release workflow is started by hand (*Actions > Release > Run workflow*)
+rather than on every push to `main`, so that a maintainer decides when a
+version exists. To see what it would do without changing anything:
+
+```bash
+uv sync --group release
+uv run semantic-release --noop version
+```
+
+## Publishing to PyPI (not done here)
+
+This package is not published to PyPI: it is a teaching example, and
+publishing would put a radiograph classifier into a package index where
+people install things without reading them. If it were to be published, the
+steps would be:
+
+1. choose a name that is free on PyPI and set it in `pyproject.toml`;
+2. build the wheel and the source distribution (`uv build`);
+3. configure a *trusted publisher* on PyPI for this repository and workflow,
+   so that no API token has to be stored in GitHub;
+4. add a job to `release.yml`, after the version is tagged, that uploads the
+   files (for example with the `pypa/gh-action-pypi-publish` action);
+5. test the whole chain against TestPyPI first.
+
+The Carpentries Incubator lesson
+[Publishing a Python package](https://carpentries-incubator.github.io/python-packaging-publishing/)
+walks through these steps.
+
+## Container registry (not done here)
+
+The CI builds the image but does not push it. Pushing it to the GitHub
+Container Registry (`ghcr.io/tomboulier/tef-health-notebook-to-bedside`)
+would let a cluster pull it with Apptainer (see [Usage](usage.md)), and would
+archive the exact environment of each release; it is a `docker/login-action`
+plus a `docker push` in the `container` job, with the `packages: write`
+permission. It is left as a decision for the maintainer.

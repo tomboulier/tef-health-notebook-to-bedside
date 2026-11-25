@@ -8,6 +8,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hello-world-medical-imaging"
+# The version is managed by python-semantic-release from the commit history
+# (see docs/automation.md). Do not edit it by hand.
 version = "0.0.0"
 description = "From notebook to bedside: the 'Hello World Deep Learning in Medical Imaging' tutorial as reproducible, tested, documented code."
 readme = "README.md"
@@ -30,6 +32,10 @@ dev = [
     "pytest==9.2.0",
     "ruff==0.17.4",
     "mypy==2.4.1",
+]
+# Computes the version number and the changelog from the commit messages.
+release = [
+    "python-semantic-release==10.7.0",
 ]
 # Only needed to open or run the demonstration notebook (`uv sync --group notebook`).
 notebook = [
@@ -87,3 +93,22 @@ files = ["src", "tests"]
 [[tool.mypy.overrides]]
 module = ["tensorflow.*", "keras.*"]
 ignore_missing_imports = true
+
+# ---------------------------------------------------------------------------
+# Version number and changelog derived from Conventional Commits
+# ---------------------------------------------------------------------------
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+commit_parser = "conventional"
+allow_zero_version = true
+major_on_zero = false
+tag_format = "v{version}"
+
+[tool.semantic_release.changelog]
+mode = "update"
+insertion_flag = "<!-- version list -->"
+default_templates = { changelog_file = "CHANGELOG.md" }
+
+[tool.semantic_release.branches.main]
+match = "main"
+prerelease = false
