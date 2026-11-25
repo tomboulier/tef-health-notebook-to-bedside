@@ -25,6 +25,10 @@ dependencies = [
 hello-world-medical-imaging = "hello_world_medical_imaging.cli:main"
 
 [dependency-groups]
+# Installed by default by `uv sync`: the tools used to check the code.
+dev = [
+    "pytest==9.2.0",
+]
 # Only needed to open or run the demonstration notebook (`uv sync --group notebook`).
 notebook = [
     "papermill==2.7.0",
@@ -33,3 +37,9 @@ notebook = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/hello_world_medical_imaging"]
+
+# ---------------------------------------------------------------------------
+# Tests
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
