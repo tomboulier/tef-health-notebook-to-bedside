@@ -6,11 +6,14 @@ passes the model and the datasets in.
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 import keras
 import tensorflow as tf
 from matplotlib.figure import Figure
+
+logger = logging.getLogger(__name__)
 
 
 def train(
@@ -31,11 +34,13 @@ def train(
         The training history: one value per epoch for the loss, the accuracy,
         the validation loss and the validation accuracy.
     """
-    print(f"Training for {epochs} epoch(s)")
+    logger.info("Training for %d epoch(s)", epochs)
     # The datasets are already shuffled (or deliberately not), hence shuffle=False.
     history: keras.callbacks.History = model.fit(
         train_dataset, epochs=epochs, validation_data=validation_dataset, shuffle=False
     )
+    final = {name: round(values[-1], 4) for name, values in history.history.items()}
+    logger.info("Training finished: %s", final)
     return history
 
 
@@ -62,4 +67,5 @@ def plot_history(history: keras.callbacks.History, path: Path) -> Path:
     axes.legend()
     path.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(path)
+    logger.info("Training curves saved to %s", path)
     return path

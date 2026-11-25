@@ -8,6 +8,7 @@ training function.
 from __future__ import annotations
 
 import argparse
+import logging
 import sys
 from pathlib import Path
 
@@ -22,6 +23,8 @@ from hello_world_medical_imaging.data import (
 from hello_world_medical_imaging.model import build_model
 from hello_world_medical_imaging.predict import label_from_score, predict_image
 from hello_world_medical_imaging.training import plot_history, train
+
+logger = logging.getLogger(__name__)
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -72,11 +75,12 @@ def run(config: Config) -> None:
 
     config.output_directory.mkdir(parents=True, exist_ok=True)
     model.save(config.output_directory / "model.keras")
+    logger.info("Model saved to %s", config.output_directory / "model.keras")
     plot_history(history, config.output_directory / "training_curves.png")
 
     for image_path in sorted((dataset_directory / TEST_SUBDIRECTORY).glob("*.png")):
         score = predict_image(model, image_path, config.image_size)
-        print(f"{image_path.name}: score {score:.3f}, predicted {label_from_score(score)}")
+        logger.info("%s: score %.3f, predicted %s", image_path.name, score, label_from_score(score))
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -85,6 +89,9 @@ def main(argv: list[str] | None = None) -> None:
     Args:
         argv: The arguments, without the program name; ``None`` reads ``sys.argv``.
     """
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
+    )
     args = parse_args(sys.argv[1:] if argv is None else argv)
     run(load_config(args.config))
 

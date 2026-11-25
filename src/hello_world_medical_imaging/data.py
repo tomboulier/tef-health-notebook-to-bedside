@@ -9,6 +9,7 @@ with either.
 
 from __future__ import annotations
 
+import logging
 import tempfile
 import urllib.request
 import zipfile
@@ -17,6 +18,8 @@ from pathlib import Path
 import keras
 import numpy as np
 import tensorflow as tf
+
+logger = logging.getLogger(__name__)
 
 # Sub-directories of the dataset, as shipped in the tutorial's zip archive.
 TRAIN_SUBDIRECTORY = "TRAIN"
@@ -43,15 +46,17 @@ def download_dataset(url: str, destination: Path) -> Path:
         FileNotFoundError: If the archive does not contain the expected folder.
     """
     if destination.exists():
+        logger.info("Dataset already present in %s, download skipped", destination)
         return destination
     destination.parent.mkdir(parents=True, exist_ok=True)
-    print(f"Downloading {url}")
+    logger.info("Downloading %s", url)
     with tempfile.NamedTemporaryFile(suffix=".zip") as archive:
         urllib.request.urlretrieve(url, archive.name)
         with zipfile.ZipFile(archive.name) as zipped:
             zipped.extractall(destination.parent)
     if not destination.exists():
         raise FileNotFoundError(f"Archive from {url} did not contain {destination.name}")
+    logger.info("Dataset unpacked in %s", destination)
     return destination
 
 
