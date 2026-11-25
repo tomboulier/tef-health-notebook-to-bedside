@@ -14,7 +14,7 @@ authors:
   - family-names: Boulier
     given-names: Thomas
     affiliation: "CHU Grenoble Alpes; TIMC, Université Grenoble Alpes"
-version: 0.1.0
+version: 1.0.0
 repository-code: "https://github.com/tomboulier/tef-health-notebook-to-bedside"
 url: "https://tomboulier.github.io/tef-health-notebook-to-bedside/"
 license:
