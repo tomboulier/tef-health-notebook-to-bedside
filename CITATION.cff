@@ -1,0 +1,48 @@
+# How to cite this repository. GitHub reads this file and shows a
+# "Cite this repository" button; the version is updated at each release.
+cff-version: 1.2.0
+message: "If you use this material, please cite it as below."
+type: software
+title: "From notebook to bedside: best practices in software engineering for robust and maintainable medical AI"
+abstract: >-
+  Companion repository of a TEF-Health training capsule. The Hello World Deep
+  Learning in Medical Imaging tutorial of Lakhani et al. (2018) is taken from a
+  Jupyter notebook to maintainable code in six steps: version control,
+  reproducible environment, architecture, tests, documentation and automation,
+  with one Git tag per step.
+authors:
+  - family-names: Boulier
+    given-names: Thomas
+    affiliation: "CHU Grenoble Alpes; TIMC, Université Grenoble Alpes"
+version: 0.1.0
+repository-code: "https://github.com/tomboulier/tef-health-notebook-to-bedside"
+url: "https://tomboulier.github.io/tef-health-notebook-to-bedside/"
+license:
+  - MIT
+  - CC-BY-SA-4.0
+keywords:
+  - research software engineering
+  - reproducibility
+  - medical imaging
+  - deep learning
+  - TEF-Health
+references:
+  - type: article
+    title: "Hello World Deep Learning in Medical Imaging"
+    authors:
+      - family-names: Lakhani
+        given-names: Paras
+      - family-names: Gray
+        given-names: Daniel L.
+      - family-names: Pett
+        given-names: Carl R.
+      - family-names: Nagy
+        given-names: Paul
+      - family-names: Shih
+        given-names: George
+    journal: "Journal of Digital Imaging"
+    volume: 31
+    start: 283
+    end: 289
+    year: 2018
+    doi: 10.1007/s10278-018-0079-6
