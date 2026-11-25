@@ -1,0 +1,8 @@
+# Only the files the image needs are sent to Docker.
+.git
+.venv
+data
+outputs
+**/Open_I_abd_vs_CXRs
+**/__pycache__
+**/.ipynb_checkpoints
