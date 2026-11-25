@@ -1,9 +1,10 @@
-# Container image that trains the classifier with the exact dependency
-# versions of uv.lock.
+# Container image that trains the classifier, or runs the tests, with the
+# exact dependency versions of uv.lock.
 #
 #   docker build --tag hello-world-medical-imaging .
 #   docker run --rm --volume "$PWD/data:/app/data" --volume "$PWD/outputs:/app/outputs" \
 #       hello-world-medical-imaging
+#   docker run --rm hello-world-medical-imaging pytest
 #
 # The trained model and the training curves are written to outputs/.
 FROM python:3.12.16-slim
@@ -21,9 +22,10 @@ ENV UV_LINK_MODE=copy \
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-install-project
 
-# Then the package itself and its configuration.
+# Then the package itself, its configuration and its tests.
 COPY README.md config.toml ./
 COPY src ./src
+COPY tests ./tests
 RUN uv sync --frozen
 
 CMD ["hello-world-medical-imaging", "--config", "config.toml"]
