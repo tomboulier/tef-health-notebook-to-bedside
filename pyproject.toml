@@ -19,13 +19,17 @@ dependencies = [
     "numpy==2.5.4",
     "pillow==13.0.0",
     "matplotlib==3.11.2",
-    # Run the notebook from the command line, without a browser.
-    "papermill==2.7.0",
-    "ipykernel==7.4.0",
 ]
 
 [project.scripts]
 hello-world-medical-imaging = "hello_world_medical_imaging.cli:main"
+
+[dependency-groups]
+# Only needed to open or run the demonstration notebook (`uv sync --group notebook`).
+notebook = [
+    "papermill==2.7.0",
+    "ipykernel==7.4.0",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/hello_world_medical_imaging"]

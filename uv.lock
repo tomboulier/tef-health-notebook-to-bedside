@@ -872,22 +872,30 @@ name = "hello-world-medical-imaging"
 version = "0.0.0"
 source = { editable = "." }
 dependencies = [
-    { name = "ipykernel" },
     { name = "matplotlib" },
     { name = "numpy" },
-    { name = "papermill" },
     { name = "pillow" },
     { name = "tensorflow" },
 ]
 
+[package.dev-dependencies]
+notebook = [
+    { name = "ipykernel" },
+    { name = "papermill" },
+]
+
 [package.metadata]
 requires-dist = [
-    { name = "ipykernel", specifier = "==7.4.0" },
     { name = "matplotlib", specifier = "==3.11.2" },
     { name = "numpy", specifier = "==2.5.4" },
-    { name = "papermill", specifier = "==2.7.0" },
     { name = "pillow", specifier = "==13.0.0" },
     { name = "tensorflow", specifier = "==2.21.0" },
+]
+
+[package.metadata.requires-dev]
+notebook = [
+    { name = "ipykernel", specifier = "==7.4.0" },
+    { name = "papermill", specifier = "==2.7.0" },
 ]
 
 [[package]]
