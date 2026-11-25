@@ -34,7 +34,11 @@ model ([ADR 0001](docs/adr/0001-inject-the-data-source-into-training.md)).
 uv run ruff check . && uv run ruff format --check .
 uv run mypy
 uv run pytest
+uv run --group docs mkdocs build --strict
 ```
+
+The same commands run in the continuous integration workflow on every push
+and pull request.
 
 When you fix a bug or add behaviour, write the failing test first
 ([Testing](docs/testing.md)). Give every public function a docstring in the
@@ -46,7 +50,9 @@ as a new [architecture decision record](docs/adr/index.md).
 
 Use [Conventional Commits](https://www.conventionalcommits.org/) in English:
 `feat: ...`, `fix: ...`, `docs: ...`, `test: ...`, `refactor: ...`,
-`build: ...`, `ci: ...`, `chore: ...`. One commit, one change.
+`build: ...`, `ci: ...`, `chore: ...`. One commit, one change. The version
+number and `CHANGELOG.md` are generated from them
+([Automation and releases](docs/automation.md)).
 
 ## What never goes into Git
 

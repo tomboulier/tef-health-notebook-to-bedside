@@ -1,3 +1,6 @@
+[![CI](https://github.com/tomboulier/tef-health-notebook-to-bedside/actions/workflows/ci.yml/badge.svg)](https://github.com/tomboulier/tef-health-notebook-to-bedside/actions/workflows/ci.yml)
+[![Documentation](https://github.com/tomboulier/tef-health-notebook-to-bedside/actions/workflows/docs.yml/badge.svg)](https://tomboulier.github.io/tef-health-notebook-to-bedside/)
+
 # From notebook to bedside
 
 This repository is the worked example of a capsule of the TEF-Health training
@@ -14,6 +17,10 @@ original code and images at
 [paras42/Hello_World_Deep_Learning](https://github.com/paras42/Hello_World_Deep_Learning)).
 It fine-tunes Inception V3, pre-trained on ImageNet, to tell chest
 radiographs from abdominal ones.
+
+The companion page of the capsule, with the six steps, their readings and
+links to the code at each step, is published at
+<https://tomboulier.github.io/tef-health-notebook-to-bedside/>.
 
 > This is a teaching example. It is not a medical device and must not be used
 > to make any decision about a patient.
@@ -34,6 +41,7 @@ step, and compare two tags to see what the step changed
 | `step-3-architecture` | The `hello_world_medical_imaging` package, with the data source injected into training |
 | `step-4-tests` | Unit tests, an offline integration test, doctests, Ruff and mypy |
 | `step-5-documentation` | Docstrings, logging, a decision record, usage and testing guides |
+| `step-6-automation` | Continuous integration, the documentation site, versions and changelog from the commits |
 
 ## Install
 
@@ -79,7 +87,12 @@ uv run pytest                  # unit tests, integration test and doctests
 uv run ruff check .            # lint
 uv run ruff format --check .   # formatting
 uv run mypy                    # types
+uv run --group docs mkdocs build --strict   # documentation site
 ```
+
+The same checks run on GitHub Actions on every push and pull request, and
+every week; versions and [`CHANGELOG.md`](CHANGELOG.md) are derived from the
+commit messages ([docs/automation.md](docs/automation.md)).
 
 The tests need neither the network nor the radiographs; see
 [docs/testing.md](docs/testing.md).
@@ -90,7 +103,8 @@ The tests need neither the network nor the radiographs; see
 src/hello_world_medical_imaging/   the package: config, data, model, training, predict, cli
 tests/                             pytest suite
 notebooks/                         a short demonstration of the package
-docs/                              usage, testing, architecture decision records
+docs/                              companion page (MkDocs site), usage, testing, automation, decision records
+.github/workflows/                 continuous integration, documentation site, releases
 config.toml                        experiment settings
 Dockerfile                         image that runs the training or the tests
 AGENTS.md, CONTRIBUTING.md         architecture and rules, for coding agents and for people

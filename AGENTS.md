@@ -48,9 +48,10 @@ uv run hello-world-medical-imaging         # train with config.toml
 uv run ruff check . && uv run ruff format --check .
 uv run mypy
 uv run pytest                              # unit tests, integration test and doctests
+uv run --group docs mkdocs build --strict  # documentation site
 ```
 
-Ruff, mypy and pytest must all pass before a commit. When fixing a bug or
+All of them must pass before a commit; the CI workflow runs the same checks. When fixing a bug or
 adding behaviour, write the failing test first, then the code that makes it
 pass. Tests never use the network or the real radiographs: use the fixtures
 of `tests/conftest.py` and `synthetic_datasets`.
@@ -58,7 +59,8 @@ of `tests/conftest.py` and `synthetic_datasets`.
 ## Conventions
 
 - Conventional Commits in English (`feat:`, `fix:`, `docs:`, `test:`,
-  `refactor:`, `build:`, `ci:`, `chore:`).
+  `refactor:`, `build:`, `ci:`, `chore:`). The version number and
+  `CHANGELOG.md` are derived from them; do not edit either by hand.
 - No data, model weights or notebook outputs in Git (`.gitignore`).
 - Pin every new dependency to an exact version in `pyproject.toml` and run
   `uv lock`.
