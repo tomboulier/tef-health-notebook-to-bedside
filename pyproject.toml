@@ -65,7 +65,15 @@ select = [
     "UP",      # pyupgrade
     "N",       # pep8-naming
     "SIM",     # simplify
+    "D",       # pydocstyle: every public module, class and function has a docstring
 ]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D"]                        # test names are their documentation
+"notebooks/*" = ["D"]
 
 # ---------------------------------------------------------------------------
 # Static typing with mypy. TensorFlow and Keras ship no type information, so

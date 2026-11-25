@@ -27,6 +27,12 @@ from hello_world_medical_imaging.training import plot_history, train
 def parse_args(argv: list[str]) -> argparse.Namespace:
     """Parse the command line.
 
+    Args:
+        argv: The arguments, without the program name.
+
+    Returns:
+        The parsed arguments: ``config``, the path of the configuration file.
+
     >>> parse_args([]).config
     PosixPath('config.toml')
     >>> parse_args(["--config", "other.toml"]).config
@@ -46,6 +52,15 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 
 def run(config: Config) -> None:
+    """Run the experiment described by ``config``.
+
+    Downloads the images if needed, trains the model, saves it with its
+    training curves to the output folder, and reports the prediction for
+    each test image.
+
+    Args:
+        config: The experiment configuration.
+    """
     keras.utils.set_random_seed(config.seed)
 
     dataset_directory = download_dataset(config.dataset_url, config.dataset_directory)
@@ -65,6 +80,11 @@ def run(config: Config) -> None:
 
 
 def main(argv: list[str] | None = None) -> None:
+    """Entry point of the ``hello-world-medical-imaging`` command.
+
+    Args:
+        argv: The arguments, without the program name; ``None`` reads ``sys.argv``.
+    """
     args = parse_args(sys.argv[1:] if argv is None else argv)
     run(load_config(args.config))
 

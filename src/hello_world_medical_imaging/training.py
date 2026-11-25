@@ -19,6 +19,18 @@ def train(
     validation_dataset: tf.data.Dataset,
     epochs: int,
 ) -> keras.callbacks.History:
+    """Fit ``model`` for ``epochs`` passes over ``train_dataset``.
+
+    Args:
+        model: A compiled Keras model.
+        train_dataset: Batches of ``(images, labels)`` used to update the weights.
+        validation_dataset: Batches of ``(images, labels)`` only used to report metrics.
+        epochs: Number of passes over the training data.
+
+    Returns:
+        The training history: one value per epoch for the loss, the accuracy,
+        the validation loss and the validation accuracy.
+    """
     print(f"Training for {epochs} epoch(s)")
     # The datasets are already shuffled (or deliberately not), hence shuffle=False.
     history: keras.callbacks.History = model.fit(
@@ -28,7 +40,15 @@ def train(
 
 
 def plot_history(history: keras.callbacks.History, path: Path) -> Path:
-    # Loss and accuracy, on training and validation data, saved to a file.
+    """Save the training curves (loss and accuracy, training and validation) to a file.
+
+    Args:
+        history: The history returned by :func:`train`.
+        path: The image file to write, for example ``outputs/training_curves.png``.
+
+    Returns:
+        ``path``, for convenience.
+    """
     figure = Figure()
     axes = figure.subplots()
     for key, color in (

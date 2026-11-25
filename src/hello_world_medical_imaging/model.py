@@ -17,6 +17,15 @@ from hello_world_medical_imaging.config import Augmentation
 def augmentation_layers(augmentation: Augmentation) -> keras.Sequential:
     """Random transformations of the training images, as ImageDataGenerator did them.
 
+    Angles are converted from degrees to the units of the Keras layers, and
+    borders are filled with the nearest pixel.
+
+    Args:
+        augmentation: Ranges of the transformations.
+
+    Returns:
+        The layers, to be applied in sequence; Keras only applies them in training.
+
     >>> len(augmentation_layers(Augmentation(horizontal_flip=False)).layers)
     4
     """
@@ -43,7 +52,22 @@ def build_model(
     augmentation: Augmentation | None = None,
     pretrained: bool = True,
 ) -> keras.Model:
-    # pretrained=False gives random weights: no download, which tests need.
+    """Build and compile the transfer-learning classifier.
+
+    Inception V3 without its top layers, followed by global average pooling,
+    a fully connected layer of 256 units, dropout and a sigmoid output.
+
+    Args:
+        image_size: Side of the square input images, at least 75 pixels.
+        learning_rate: Learning rate of the Adam optimizer (kept low for transfer learning).
+        augmentation: Random transformations of the training images, if any.
+        pretrained: Load the ImageNet weights (downloaded once by Keras). ``False``
+            gives random weights, which is what the tests use to stay offline.
+
+    Returns:
+        A compiled model that takes images in ``[0, 255]`` and outputs the
+        probability of the abdomen class.
+    """
     base_model = keras.applications.InceptionV3(
         weights="imagenet" if pretrained else None,
         include_top=False,
@@ -55,8 +79,6 @@ def build_model(
     if augmentation is not None:
         x = augmentation_layers(augmentation)(x)
     x = base_model(x)
-    # Classifier on top of the convolutional base: global average pooling,
-    # a fully connected layer with 256 nodes, dropout and a sigmoid output.
     x = keras.layers.GlobalAveragePooling2D()(x)
     x = keras.layers.Dense(256, activation="relu")(x)
     x = keras.layers.Dropout(0.5)(x)

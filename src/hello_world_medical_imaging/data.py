@@ -27,7 +27,21 @@ DatasetPair = tuple[tf.data.Dataset, tf.data.Dataset]
 
 
 def download_dataset(url: str, destination: Path) -> Path:
-    # Download and unpack the archive, unless the images are already there.
+    """Download and unpack the dataset archive, unless ``destination`` exists.
+
+    The archive must contain a top-level folder named like ``destination``,
+    with ``TRAIN``, ``VAL`` and ``TEST`` sub-folders.
+
+    Args:
+        url: Where to fetch the zip archive from (``https://`` or ``file://``).
+        destination: Folder that will hold the unpacked images.
+
+    Returns:
+        ``destination``, for convenience.
+
+    Raises:
+        FileNotFoundError: If the archive does not contain the expected folder.
+    """
     if destination.exists():
         return destination
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -44,7 +58,23 @@ def download_dataset(url: str, destination: Path) -> Path:
 def load_image_datasets(
     directory: Path, image_size: int, batch_size: int, seed: int
 ) -> DatasetPair:
-    # One sub-directory per class; class indices follow the alphabetical order.
+    """Read the ``TRAIN`` and ``VAL`` image folders as datasets.
+
+    Each folder holds one sub-folder per class; class indices follow the
+    alphabetical order of the sub-folder names, which makes the chest
+    radiographs (``openI_CXR``) class 0 and the abdominal ones class 1.
+    The training images are shuffled, the validation images are not.
+
+    Args:
+        directory: Root of the dataset, the folder that contains ``TRAIN`` and ``VAL``.
+        image_size: Images are resized to ``image_size`` x ``image_size`` pixels.
+        batch_size: Number of images per batch.
+        seed: Seed of the shuffling.
+
+    Returns:
+        The training and validation datasets.
+    """
+
     def read(subdirectory: str, shuffle: bool) -> tf.data.Dataset:
         dataset: tf.data.Dataset = keras.utils.image_dataset_from_directory(
             directory / subdirectory,
@@ -66,7 +96,17 @@ def synthetic_datasets(
     """Random images with random labels, with the same contract as the radiographs.
 
     No download, no patient data, and nothing for the model to learn: enough
-    to run the training pipeline.
+    to run the training pipeline in seconds, which is what the tests do.
+
+    Args:
+        image_size: Side of the square images, in pixels.
+        batch_size: Number of images per batch.
+        seed: Seed of the random images and labels.
+        train_samples: Number of training images.
+        validation_samples: Number of validation images.
+
+    Returns:
+        The training and validation datasets.
 
     >>> train, validation = synthetic_datasets(image_size=32, batch_size=4, seed=0)
     >>> images, labels = next(iter(train))
