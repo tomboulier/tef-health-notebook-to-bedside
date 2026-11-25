@@ -1,0 +1,20 @@
+# Project metadata and dependencies (PEP 621).
+# Direct dependencies are pinned to exact versions here; uv.lock pins every
+# transitive dependency too. Install with `uv sync` (see the README).
+
+[project]
+name = "hello-world-medical-imaging"
+version = "0.0.0"
+description = "From notebook to bedside: the 'Hello World Deep Learning in Medical Imaging' tutorial as reproducible, tested, documented code."
+requires-python = ">=3.12"
+authors = [{ name = "Thomas Boulier" }]
+license = "MIT"
+dependencies = [
+    "tensorflow==2.21.0",
+    "numpy==2.5.4",
+    "pillow==13.0.0",
+    "matplotlib==3.11.2",
+    # Run the notebook from the command line, without a browser.
+    "papermill==2.7.0",
+    "ipykernel==7.4.0",
+]
