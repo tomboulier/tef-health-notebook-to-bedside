@@ -1,11 +1,15 @@
 # Experiment configuration: everything that may change from one run to the
-# next lives here rather than in the code. Paths are relative to the root of
+# next lives here rather than in the code. Every value has a default in
+# src/hello_world_medical_imaging/config.py. Paths are relative to the root of
 # the repository.
 
 # Where the images are downloaded from (the original tutorial repository, at a
 # fixed commit) and where they are unpacked (ignored by Git).
 dataset_url = "https://raw.githubusercontent.com/paras42/Hello_World_Deep_Learning/9921a12c905c00a88898121d5dc538e3b524e520/Open_I_abd_vs_CXRs.zip"
 dataset_directory = "data/Open_I_abd_vs_CXRs"
+
+# Where the trained model, the training curves and other results are written (ignored by Git).
+output_directory = "outputs"
 
 # Images are resized to image_size x image_size pixels (Inception V3 expects 299).
 image_size = 299

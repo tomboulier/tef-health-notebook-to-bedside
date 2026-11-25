@@ -2,10 +2,15 @@
 # Direct dependencies are pinned to exact versions here; uv.lock pins every
 # transitive dependency too. Install with `uv sync` (see the README).
 
+[build-system]
+requires = ["hatchling==1.28.0"]
+build-backend = "hatchling.build"
+
 [project]
 name = "hello-world-medical-imaging"
 version = "0.0.0"
 description = "From notebook to bedside: the 'Hello World Deep Learning in Medical Imaging' tutorial as reproducible, tested, documented code."
+readme = "README.md"
 requires-python = ">=3.12"
 authors = [{ name = "Thomas Boulier" }]
 license = "MIT"
@@ -18,3 +23,6 @@ dependencies = [
     "papermill==2.7.0",
     "ipykernel==7.4.0",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hello_world_medical_imaging"]

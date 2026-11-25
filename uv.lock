@@ -870,7 +870,7 @@ wheels = [
 [[package]]
 name = "hello-world-medical-imaging"
 version = "0.0.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "ipykernel" },
     { name = "matplotlib" },
