@@ -2,7 +2,9 @@
 
 A data source returns a pair of (training, validation) datasets whose
 elements are batches of RGB images with pixel values in [0, 255] and binary
-labels (0 for chest, 1 for abdomen).
+labels (0 for chest, 1 for abdomen). Two sources honour that contract: the
+radiographs of the tutorial, and synthetic images. The training code works
+with either.
 """
 
 from __future__ import annotations
@@ -13,6 +15,7 @@ import zipfile
 from pathlib import Path
 
 import keras
+import numpy as np
 import tensorflow as tf
 
 # Sub-directories of the dataset, as shipped in the tutorial's zip archive.
@@ -53,3 +56,20 @@ def load_image_datasets(
         return dataset
 
     return read(TRAIN_SUBDIRECTORY, shuffle=True), read(VALIDATION_SUBDIRECTORY, shuffle=False)
+
+
+def synthetic_datasets(
+    image_size: int, batch_size: int, seed: int, train_samples: int = 8, validation_samples: int = 4
+) -> DatasetPair:
+    # Random images with random labels: no download, no patient data, and
+    # nothing for the model to learn. Enough to run the training pipeline.
+    generator = np.random.default_rng(seed)
+
+    def make(samples: int) -> tf.data.Dataset:
+        images = generator.integers(0, 256, size=(samples, image_size, image_size, 3))
+        labels = generator.integers(0, 2, size=(samples, 1))
+        return tf.data.Dataset.from_tensor_slices(
+            (images.astype(np.float32), labels.astype(np.float32))
+        ).batch(batch_size)
+
+    return make(train_samples), make(validation_samples)
